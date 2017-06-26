@@ -95,18 +95,37 @@ namespace ConsoleApplication1
                 candidates[i] = new SortedDictionary<char, int>();
             }
 
-            Dictionary<string, int> dic = new Dictionary<string, int>();
-            foreach (KeyValuePair<string, int> entry in nonZero)
+            int N = LEN - 1;
+            while (N > 0)
             {
-                foreach (KeyValuePair<string, int> entry2 in nonZero)
+                Dictionary<string, int> dic = new Dictionary<string, int>();
+                foreach (KeyValuePair<string, int> entry in nonZero)
                 {
-                    if (!entry.Key.Equals(entry2.Key))
+                    dic.Add(entry.Key, entry.Value);
+                    foreach (KeyValuePair<string, int> entry2 in nonZero)
                     {
-                        if(Get)
+                        if (!entry.Key.Equals(entry2.Key))
+                        {
+                            if (GetCharDuplicatesCount(entry.Key, entry2.Key) == N)
+                            {
+                                dic.Add(entry2.Key, entry2.Value);
+                                // TODO: compare characters of two or more sequences and if they are the same, decrease the value of the sequence
+                                /*
+                                 * Example:
+                                 * 816-2
+                                 *  and
+                                 * 815-1
+                                 * !!! 8 is the same => 8 is possible
+                                 * 816-2 => 816-1
+                                 * 815-1 => 815-0 => !!! 1 is not possible, 5 is not possible
+                                 */
+                            }
+                        }
                     }
                 }
-            }
 
+                --N;
+            }
             Console.WriteLine();
         }
     }
